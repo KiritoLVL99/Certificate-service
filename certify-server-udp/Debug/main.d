@@ -1,5 +1,3 @@
-main.d: ../main.cpp ../Server.h ../CreateBD.cpp
+main.d: ../main.cpp ../Server.h
 
 ../Server.h:
-
-../CreateBD.cpp:
