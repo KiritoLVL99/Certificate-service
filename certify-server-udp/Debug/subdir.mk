@@ -4,12 +4,18 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../CreateBD.cpp \
+../Server.cpp \
 ../main.cpp 
 
 OBJS += \
+./CreateBD.o \
+./Server.o \
 ./main.o 
 
 CPP_DEPS += \
+./CreateBD.d \
+./Server.d \
 ./main.d 
 
 

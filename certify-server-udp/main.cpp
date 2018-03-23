@@ -7,51 +7,61 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <string>
-#include "string.h"
+#include <string.h>
 #include <iostream>
 #include <unistd.h>
 #include <time.h>
+#include <map>
+#include <set>
+#include <vector>
+
+#include "Server.h"
 
 using namespace std;
 
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
+map<string,string > names;
+
+string GetSerteficate(string identificate)
+{
+	string result;
+	result = "univer.ru.txt";
+	return result;
+}
+map<string,string > CreateBD()
+{
+	map<string,string > names;
+	string s="univer.ru";
+	names[s]=(GetSerteficate(s));
+	return names;
+}
 
 int main()
 {
-    int sock, listener;
-    struct sockaddr_in addr;
-    char buf[1024];
-    int bytes_read;
+	names = CreateBD();
 
-    listener = socket(AF_INET, SOCK_STREAM, 0);
-    if(listener < 0)
+	Server serv("127.0.0.5",3425);
+
+    char buf[2048];
+
+    serv.listener = socket(AF_INET, SOCK_STREAM, 0);
+    if(serv.listener < 0)
     {
         perror("socket");
         exit(1);
     }
 
-    string my_addr = "127.0.0.5";
-
-    inet_aton(my_addr.c_str(), &addr.sin_addr);
-
-    addr.sin_family = AF_INET;
-    addr.sin_port = htons(3425);
-    //addr.sin_addr.s_addr = htonl(INADDR_ANY);
-    //addr.sin_addr.s_addr = htonl()
-    if(bind(listener, (struct sockaddr *)&addr, sizeof(addr)) < 0)
+    if(bind(serv.listener, (struct sockaddr *)&serv.addr, sizeof(serv.addr)) < 0)
     {
         perror("bind");
         exit(2);
     }
 
-    listen(listener, 1);
+    listen(serv.listener, 1);
 
     while(1)
     {
-        sock = accept(listener, NULL, NULL);
-        if(sock < 0)
+        serv.sock = accept(serv.listener, NULL, NULL);
+        if(serv.sock < 0)
         {
             perror("accept");
             exit(3);
@@ -59,13 +69,28 @@ int main()
 
         while(1)
         {
-            bytes_read = recv(sock, buf, 1024, 0);
-            if(bytes_read <= 0) break;
+            serv.bytes_read = recv(serv.sock, buf, 2048, 0);
+
+            if(serv.bytes_read <= 0)
+            {
+            	break;
+            }
             cout<<buf<<endl;
-            send(sock, buf, bytes_read, 0);
+
+            string kkt = buf;
+
+            string buf1=names[kkt];
+            freopen("univer.ru.txt","r",stdin);
+            cin>>buf1;
+
+            char buf2[2048];
+            strcpy(buf2,buf1.c_str());
+
+            send(serv.sock, buf2, serv.bytes_read, 0);
+
         }
 
-        close(sock);
+        close(serv.sock);
     }
 
     return 0;
