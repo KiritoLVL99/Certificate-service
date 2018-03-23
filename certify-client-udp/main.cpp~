@@ -14,8 +14,8 @@
 
 using namespace std;
 
-char message[] = "qwert";
-char buf[2048];
+char message[] = "qwert\n";
+char buf[sizeof(message)];
 
 int main()
 {
@@ -45,12 +45,11 @@ int main()
         exit(2);
     }
 
-    send(sock, message, 2048, 0);
-    recv(sock, buf, 2048, 0);
+    send(sock, message, sizeof(message), 0);
+    recv(sock, buf, sizeof(message), 0);
 
     printf(buf);
-    printf("\n");
-
+    printf("11");
     close(sock);
 
     return 0;
