@@ -14,16 +14,27 @@ struct client
 {
 	int sock;
 	struct sockaddr_in addr;
+	//char message[30];
 };
 
-char message[] = "qwert";
+struct init
+{
+	char servIP[30];
+	int serv_port;
+	char yourID[30];
+};
+
+struct init ReadServInfo();
+
 char buf[2048];
 
 int main()
 {
 
+	struct init read=ReadServInfo();
 	struct client cl;
 
+	//char message[30]=read.yourID;
     cl.sock = socket(AF_INET, SOCK_STREAM, 0);
     if(cl.sock < 0)
     {
@@ -32,14 +43,12 @@ int main()
     }
 
     cl.addr.sin_family = AF_INET;
-    cl.addr.sin_port = htons(3425); // или любой другой порт...
+    cl.addr.sin_port = htons(read.serv_port);
 
 
-    char my_addr[] = "127.0.0.5";
+//char my_addr[] = read.servIP;
 
-    inet_aton(my_addr,&cl.addr.sin_addr);
-
-
+    inet_aton(read.servIP,&cl.addr.sin_addr);
 
     if(connect(cl.sock, (struct sockaddr *)&cl.addr, sizeof(cl.addr)) < 0)
     {
@@ -47,7 +56,7 @@ int main()
         exit(2);
     }
 
-    send(cl.sock, message, 2048, 0);
+    send(cl.sock, read.yourID, 2048, 0);
     recv(cl.sock, buf, 2048, 0);
 
     printf(buf);
@@ -56,4 +65,15 @@ int main()
     close(cl.sock);
 
     return 0;
+}
+
+struct init ReadServInfo()
+{
+	printf("Certify_Client:\n");
+	printf("enter the server ip and the port to which you want to connect:\n");
+	struct init info;
+	scanf("%s %d",&info.servIP,&info.serv_port);
+	printf("enter your ID\n");
+	scanf("%s",&info.yourID);
+	return info;
 }
