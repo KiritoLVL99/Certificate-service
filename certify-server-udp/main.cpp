@@ -19,34 +19,22 @@
 
 using namespace std;
 
-map<string,string > names;
-
-string GetSerteficate(string identificate)
-{
-	string result;
-	result = "univer.ru.txt";
-	return result;
-}
-map<string,string > CreateBD()
-{
-	map<string,string > names;
-	string s="univer.ru";
-	names[s]=(GetSerteficate(s));
-	return names;
-}
+string GetSerteficate(string identificate);
+pair<string,int> ReadServInfo();
 
 int main()
 {
-	names = CreateBD();
+	pair<string,int> init=ReadServInfo();
 
-	Server serv("127.0.0.5",3425);
+	Server serv(init.first,init.second);
+	cout<<"Server run\n";
 
     char buf[2048];
 
     serv.listener = socket(AF_INET, SOCK_STREAM, 0);
     if(serv.listener < 0)
     {
-        perror("socket");
+        perror("socket"); //diagnostick send
         exit(1);
     }
 
@@ -78,10 +66,7 @@ int main()
             cout<<buf<<endl;
 
             string kkt = buf;
-
-            string buf1=names[kkt];
-            freopen("univer.ru.txt","r",stdin);
-            cin>>buf1;
+            string buf1 = GetSerteficate(kkt);
 
             char buf2[2048];
             strcpy(buf2,buf1.c_str());
@@ -94,4 +79,31 @@ int main()
     }
 
     return 0;
+}
+
+string GetSerteficate(string identificate)
+{
+	string id = identificate+".txt";
+	char id1[70];
+	strcpy(id1,id.c_str());
+
+	freopen(id1,"r",stdin);
+	string result="";
+	string res;
+
+	while(cin>>res)
+	{
+		result+=res;
+	}
+	cin>>result;
+	return result;
+}
+pair<string,int> ReadServInfo()
+{
+	cout<<"Certify_Server:\n";
+	cout<<"enter server_ip and port:\n";
+	pair<string,int> init;
+	cin>>init.first>>init.second;
+	return init;
+
 }
