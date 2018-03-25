@@ -1,4 +1,4 @@
-#include "../cxxtest-4.3/cxxtest/TestSuite.h"
+#include "cxxtest/TestSuite.h"
 
 #include "../certify-server-udp/Server.h"
 #include "../certify-server-udp/GetIniServ.h"
