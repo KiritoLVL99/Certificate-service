@@ -1,0 +1,9 @@
+
+In MyTestSuite::testGetServerInitialization:
+/home/tatiana/Рабочий стол/sertificate-service/certify-tests/MyTestSuite.h:30: Error: Expected ("testread" == info_read_fun.first), found (testread != "-1")
+/home/tatiana/Рабочий стол/sertificate-service/certify-tests/MyTestSuite.h:31: Error: Expected (11 == info_read_fun.second), found (11 != -1)
+input
+In MyTestSuite::testGetIDUser:
+/home/tatiana/Рабочий стол/sertificate-service/certify-tests/MyTestSuite.h:44: Error: Expected ("input" == result), found (input != "")
+Failed 2 and Skipped 0 of 2 tests
+Success rate: 0%
