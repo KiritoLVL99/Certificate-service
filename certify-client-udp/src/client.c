@@ -30,7 +30,6 @@ char buf[2048];
 
 int main()
 {
-
 	struct init read=ReadServInfo();
 	struct client cl;
 
